@@ -1,3 +1,27 @@
+// To fetch acutal browser name from user agent string
+function getBrowserName() {
+    if (navigator.userAgentData && navigator.userAgentData.brands) {
+        const brands = navigator.userAgentData.brands.map(b => b.brand);
+
+        if (brands.includes("Google Chrome")) return "Chrome";
+        if (brands.includes("Microsoft Edge")) return "Edge";
+        if (brands.includes("Brave")) return "Brave";
+        if (brands.includes("Opera")) return "Opera";
+    }
+
+    // Fallback for older browsers
+    const ua = navigator.userAgent;
+
+    if (/Edg\//.test(ua)) return "Edge";
+    if (/OPR\//.test(ua)) return "Opera";
+    if (/Brave\//.test(ua)) return "Brave";
+    if (/Chrome\//.test(ua)) return "Chrome";
+    if (/Firefox\//.test(ua)) return "Firefox";
+    if (/Safari\//.test(ua) && !/Chrome\//.test(ua)) return "Safari";
+
+    return "Unknown";
+}
+
 window.onload = async () => {
     const video = document.getElementById("video");
     const loading = document.getElementById("loading");
@@ -44,6 +68,7 @@ window.onload = async () => {
             } else {
                 push("IP Address", "::ffff:172.70.126.134");
             }
+            push("Current Browser", getBrowserName());
             push("User Agent", navigator.userAgent);
             push("Connection Method", "GET");
             push("Request URL", location);
